@@ -62,7 +62,7 @@ export default defineComponent({
         artifacts.forEach((image: { base64: string }, index: number) => {
           this.saveImageToFileSystem(
             image.base64,
-            `out/v1_img2img_${index}.png`
+            `v1_img2img_${index}.png`
           );
         });
       } catch (error) {
@@ -79,10 +79,21 @@ export default defineComponent({
     },
 
     saveImageToFileSystem(base64: string, fileName: string) {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "image/png" }); // Adjust the MIME type if necessary
+      const url = URL.createObjectURL(blob);
+
       const link = document.createElement("a");
-      link.href = base64;
+      link.href = url;
       link.download = fileName;
       link.click();
+
+      URL.revokeObjectURL(url); // Clean up the object URL
     },
   },
 });

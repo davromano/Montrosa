@@ -8,6 +8,7 @@ const isClicked = ref(false);
 
 function toggleButton() {
   isClicked.value = !isClicked.value;
+
 }
 
 </script>

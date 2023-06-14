@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import Keyword from './components/Keyword.vue';
+import Generation from './components/Generation.vue';
+
 </script>
 
 <template>
   <div>
     <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      <img src="/../src/assets/68.jpeg" class="logo" alt="Vite logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Montrosa" />
+  <Keyword word="Street Art"/>
+  <Keyword word="Pop Art"/>
+  <Keyword word="Realistic"/>
+  <Keyword word="Oil Painting"/>
+  <Generation />
 </template>
 
 <style scoped>

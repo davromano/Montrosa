@@ -17,6 +17,7 @@ import Generation from './components/Generation.vue';
   <Keyword word="Realistic"/>
   <Keyword word="Oil Painting"/>
   <Generation />
+
 </template>
 
 <style scoped>

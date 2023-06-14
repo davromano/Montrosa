@@ -62,9 +62,7 @@ export default defineComponent({
     },
 
     loadImageFromFileSystem() {
-      return fetch("/assets/68.jpeg")
-        .then((response) => response.blob())
-        .then((blob) => new File([blob], "68.jpeg", { type: "image/jpeg" }));
+        return import('@/assets/68.jpeg').then((module) => module.default);
     },
 
     saveImageToFileSystem(base64: string, fileName: string) {

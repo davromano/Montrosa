@@ -21,7 +21,7 @@ function toggleButton() {
 <style scoped>
 button {
   /* Define the initial style */
-  background-color: initial;
+  background-color: white;
 }
 
 button.clicked {

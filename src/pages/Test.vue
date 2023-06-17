@@ -4,18 +4,22 @@
     <Keyword v-for="word in key_elements" :key="word" :word="word" @click="handleButtonClick(word)" />
   </div>
   <button @click="performAPICall">Generate</button>
+  <div v-for="image in imageURLs" :key="image">
+      <img :src="image" alt="Fetched Image" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Keyword from './Keyword.vue';
-
+import Keyword from '../components/Keyword.vue';
+ 
 export default defineComponent({
   data() {
     return {
       styles: ['Street Art', 'Pop Art', 'Realistic', 'Oil Painting'],
       key_elements: ['Pianist', 'Phonograph', 'Lake', 'Crowd','Music','Flower'],
-      clickedButtons: [] as string[]
+      clickedButtons: [] as string[],
+      imageURLs: [] as string[],
     };
   },
   components: {
@@ -51,7 +55,8 @@ export default defineComponent({
 
         console.log("Image MIME type:", image.type); // Log the MIME type to the console
 
-        const text_prompt: string = this.clickedButtons.join(", ");
+        const text_prompt: string = this.clickedButtons.join(", ").concat(", ", " Montreux Jazz festival poster");
+        console.log("prompt:", text_prompt); // Log the MIME type to the console
 
         formData.append("init_image", image);
         formData.append("init_image_mode", "IMAGE_STRENGTH");
@@ -59,8 +64,8 @@ export default defineComponent({
         formData.append("text_prompts[0][text]", text_prompt);
         formData.append("cfg_scale", "7");
         formData.append("clip_guidance_preset", "FAST_BLUE");
-        formData.append("samples", "4");
-        formData.append("steps", "20");
+        formData.append("samples", "3");
+        formData.append("steps", "40");
 
         const response = await fetch(
           `${apiHost}/v1/generation/${engineId}/image-to-image`,
@@ -82,11 +87,11 @@ export default defineComponent({
         const artifacts = responseJSON.artifacts;
 
         artifacts.forEach((image: { base64: string }, index: number) => {
-          this.saveImageToFileSystem(
-            image.base64,
-            `v1_img2img_${index}.png`
-          );
+          this.imageURLs.push("data:image/jpeg;base64,".concat(" ", image.base64 as string));
+          //this.$router.push({ path: '/results', query: { image: image.base64 } });
         });
+
+
       } catch (error) {
         console.error(error);
         // Handle the error as needed (e.g., display an error message)
@@ -127,5 +132,9 @@ export default defineComponent({
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 columns */
   grid-gap: 10px; /* Adjust the space between components */
+}
+
+button {
+  background-color: yellow;
 }
 </style>

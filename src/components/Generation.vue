@@ -1,14 +1,41 @@
 <template>
-  <div>
-    <button @click="performAPICall">Call API</button>
+  <div class="grid-container">
+    <Keyword v-for="word in styles" :key="word" :word="word" @click="handleButtonClick(word)" />
+    <Keyword v-for="word in key_elements" :key="word" :word="word" @click="handleButtonClick(word)" />
   </div>
+  <button @click="performAPICall">Generate</button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Keyword from './Keyword.vue';
 
 export default defineComponent({
+  data() {
+    return {
+      styles: ['Street Art', 'Pop Art', 'Realistic', 'Oil Painting'],
+      key_elements: ['Pianist', 'Phonograph', 'Lake', 'Crowd','Music','Flower'],
+      clickedButtons: [] as string[]
+    };
+  },
+  components: {
+    Keyword
+  },
   methods: {
+
+    handleButtonClick(word: string) {
+      if (this.clickedButtons.includes(word)) {
+        // Button was clicked and is now unclicked
+        const index = this.clickedButtons.indexOf(word);
+        this.clickedButtons.splice(index, 1);
+        console.log("I removed", word);
+      } else {
+        // Button was unclicked and is now clicked
+        this.clickedButtons.push(word);
+        console.log("I added", word);
+      }
+    },
+
     async performAPICall() {
       try {
         const engineId = "stable-diffusion-v1-5";
@@ -19,26 +46,21 @@ export default defineComponent({
           throw new Error("Missing Stability API key.");
         }
 
-        const textPrompts = [
-          {
-            text: "A lighthouse on a cliff",
-            weight: 0.5,
-          },
-        ];
-
         const formData = new FormData();
         const image = await this.loadImageFromFileSystem(); // Load the image from the file system or any other source
 
         console.log("Image MIME type:", image.type); // Log the MIME type to the console
 
+        const text_prompt: string = this.clickedButtons.join(", ");
+
         formData.append("init_image", image);
         formData.append("init_image_mode", "IMAGE_STRENGTH");
         formData.append("image_strength", "0.35");
-        formData.append("text_prompts[0][text]", "Galactic dog wearing a cape");
+        formData.append("text_prompts[0][text]", text_prompt);
         formData.append("cfg_scale", "7");
         formData.append("clip_guidance_preset", "FAST_BLUE");
-        formData.append("samples", "1");
-        formData.append("steps", "30");
+        formData.append("samples", "4");
+        formData.append("steps", "20");
 
         const response = await fetch(
           `${apiHost}/v1/generation/${engineId}/image-to-image`,
@@ -98,3 +120,12 @@ export default defineComponent({
   },
 });
 </script>
+
+<style>
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns */
+  grid-gap: 10px; /* Adjust the space between components */
+}
+</style>

@@ -8,13 +8,11 @@ const isClicked = ref(false);
 
 function toggleButton() {
   isClicked.value = !isClicked.value;
-
 }
 
 </script>
 
 <template>
-
   <div class="card">
     <button :class="{ clicked: isClicked }" type="button" @click="toggleButton">{{ word }}</button>  
   </div>

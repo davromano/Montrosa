@@ -1,21 +1,28 @@
 <template>
-  <div class="grid-container">
-    <Keyword v-for="word in styles" :key="word" :word="word" @click="handleButtonClick(word)" />
-    <Keyword v-for="word in key_elements" :key="word" :word="word" @click="handleButtonClick(word)" />
+  <div v-if="!showImages">
+    <div>
+      <Keyword v-for="word in styles" :key="word" :word="word" @click="handleButtonClick(word)" />
+      <Keyword v-for="word in key_elements" :key="word" :word="word" @click="handleButtonClick(word)" />
+    </div>
+    <button @click="performAPICall">Generate</button>
   </div>
-  <button @click="performAPICall">Generate</button>
+  <div v-for="image in imageURLs" :key="image">
+      <img :src="image" alt="Fetched Image" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Keyword from '../components/Keyword.vue';
-
+ 
 export default defineComponent({
   data() {
     return {
       styles: ['Street Art', 'Pop Art', 'Realistic', 'Oil Painting'],
       key_elements: ['Pianist', 'Phonograph', 'Lake', 'Crowd','Music','Flower'],
-      clickedButtons: [] as string[]
+      clickedButtons: [] as string[],
+      imageURLs: [] as string[],
+      showImages: false,
     };
   },
   components: {
@@ -38,7 +45,8 @@ export default defineComponent({
 
     async performAPICall() {
       try {
-        const engineId = "stable-diffusion-v1-5";
+        this.showImages = true;
+        const engineId = "stable-diffusion-512-v2-1";
         const apiHost = "https://api.stability.ai";
         const apiKey = "sk-xXYOiGr6P3qRpbzrg8OJ6iOmHESwgctxMej4UewnZ1B722vE";
 
@@ -51,7 +59,8 @@ export default defineComponent({
 
         console.log("Image MIME type:", image.type); // Log the MIME type to the console
 
-        const text_prompt: string = this.clickedButtons.join(", ");
+        const text_prompt: string = this.clickedButtons.join(", ").concat(", ", " Montreux Jazz festival poster");
+        console.log("prompt:", text_prompt); // Log the MIME type to the console
 
         formData.append("init_image", image);
         formData.append("init_image_mode", "IMAGE_STRENGTH");
@@ -60,7 +69,7 @@ export default defineComponent({
         formData.append("cfg_scale", "7");
         formData.append("clip_guidance_preset", "FAST_BLUE");
         formData.append("samples", "1");
-        formData.append("steps", "20");
+        formData.append("steps", "40");
 
         const response = await fetch(
           `${apiHost}/v1/generation/${engineId}/image-to-image`,
@@ -81,13 +90,12 @@ export default defineComponent({
         const responseJSON = await response.json();
         const artifacts = responseJSON.artifacts;
 
-        artifacts.forEach((image: { base64: string }, index: number) => {
-          this.saveImageToFileSystem(
-            image.base64,
-            `v1_img2img_${index}.png`
-          );
+        artifacts.forEach((image: { base64: string }) => {
+          this.imageURLs.push("data:image/jpeg;base64,".concat(" ", image.base64 as string));
+          //this.$router.push({ path: '/results', query: { image: image.base64 } });
         });
-        
+
+
       } catch (error) {
         console.error(error);
         // Handle the error as needed (e.g., display an error message)
@@ -128,5 +136,9 @@ export default defineComponent({
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 columns */
   grid-gap: 10px; /* Adjust the space between components */
+}
+
+button {
+  background-color: yellow;
 }
 </style>

@@ -1,17 +1,11 @@
 <script setup lang="ts">
-//import Generation from './components/Generation.vue';
-
+import Generation from "./pages/Generation.vue"
 </script>
 
 <template>
   <img src="/../src/assets/68.jpeg" class="logo" alt="Vite logo" />
   <h1>Montrosa</h1>
-  <div class="router-container">
-    <router-link to="/">Donwload the image</router-link>
-    <router-link to="/test">Show the images on the same page</router-link>
-    <router-link to="/results">Results</router-link>
-  </div>
-  <router-view/>
+  <Generation/>
 </template>
 
 <style scoped>
@@ -30,11 +24,6 @@
 
 .read-the-docs {
   color: #888;
-}
-
-.router-container {
-  display: flex;
-  flex-direction: column;
 }
 
 h1 {

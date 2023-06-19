@@ -1,31 +1,35 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-
-
-defineProps<{ word: string }>()
-
-const isClicked = ref(false);
-
-function toggleButton() {
-  isClicked.value = !isClicked.value;
-}
-
-</script>
-
 <template>
   <div class="card">
-    <button :class="{ clicked: isClicked }" type="button" @click="toggleButton">{{ word }}</button>  
+    <button
+      :class="{
+        'bg-yellow-100 text-black': isClicked,
+        'bg-gray-800 text-white': !isClicked
+      }"
+      type="button"
+      @click="toggleButton"
+    >
+      {{ word }}
+    </button>
   </div>
 </template>
 
-<style scoped>
-button {
-  /* Define the initial style */
-  background-color: white;
-}
-
-button.clicked {
-  /* Style for the clicked state */
-  background-color: yellow;
-}
-</style>
+<script lang="ts">
+export default {
+  props: {
+    word: {
+      type: String,
+      required: true
+    }
+  },
+  data() {
+    return {
+      isClicked: false
+    };
+  },
+  methods: {
+    toggleButton() {
+      this.isClicked = !this.isClicked;
+    }
+  }
+};
+</script>

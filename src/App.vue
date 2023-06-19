@@ -3,12 +3,16 @@ import Generation from "./pages/Generation.vue"
 </script>
 
 <template>
-  <img src="/../src/assets/68.jpeg" class="logo" alt="Vite logo" />
-  <h1>Montrosa</h1>
+  <img src="/../src/assets/montreux_logo.jpg" alt="Vite logo" class="content-center justify-center"/>
+  <p class="content-center text-center text-white">“Just choose a poster and I can show you what I am capable of!” Montrosa </p>
+  <h1 class="content-center text-center	">Who is Montrosa?</h1>
   <Generation/>
 </template>
 
 <style scoped>
+
+@import './styles/style.css';
+
 .logo {
   height: 6em;
   padding: 1.5em;

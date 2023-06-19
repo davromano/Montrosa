@@ -1,35 +1,58 @@
 <template>
   <div v-if="!showImages">
-    <div>
-      <Keyword v-for="word in styles" :key="word" :word="word" @click="handleButtonClick(word)" />
-      <Keyword v-for="word in key_elements" :key="word" :word="word" @click="handleButtonClick(word)" />
+    <div class="content-start h-56 grid grid-cols-3 gap-4">
+      <Keyword
+        v-for="word in styles"
+        :key="word"
+        :word="word"
+        @click="handleButtonClick(word)"
+      />
+      <Keyword
+        v-for="word in key_elements"
+        :key="word"
+        :word="word"
+        @click="handleButtonClick(word)"
+      />
     </div>
-    <button @click="performAPICall">Generate</button>
+    <button @click="performAPICall" class=" text-white">Generate</button>
   </div>
-  <div v-for="image in imageURLs" :key="image">
+  <div v-if="showImages" class=" text-white">
+    <h3>Robert Bornand</h3>
+    <img src="src/assets/68.jpeg"/>
+    <h3>Montrosa's Tributes</h3>
+    <div v-for="image in imageURLs" :key="image">
       <img :src="image" alt="Fetched Image" />
+    </div>
+    <button>Change prompt</button><br/>
+    <button>Send tributes by email</button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Keyword from '../components/Keyword.vue';
- 
+import Keyword from "../components/Keyword.vue";
+
 export default defineComponent({
   data() {
     return {
-      styles: ['Street Art', 'Pop Art', 'Realistic', 'Oil Painting'],
-      key_elements: ['Pianist', 'Phonograph', 'Lake', 'Crowd','Music','Flower'],
+      styles: ["Street Art", "Pop Art", "Realistic", "Oil Painting"],
+      key_elements: [
+        "Pianist",
+        "Phonograph",
+        "Lake",
+        "Crowd",
+        "Music",
+        "Flower",
+      ],
       clickedButtons: [] as string[],
       imageURLs: [] as string[],
       showImages: false,
     };
   },
   components: {
-    Keyword
+    Keyword,
   },
   methods: {
-
     handleButtonClick(word: string) {
       if (this.clickedButtons.includes(word)) {
         // Button was clicked and is now unclicked
@@ -59,7 +82,9 @@ export default defineComponent({
 
         console.log("Image MIME type:", image.type); // Log the MIME type to the console
 
-        const text_prompt: string = this.clickedButtons.join(", ").concat(", ", " Montreux Jazz festival poster");
+        const text_prompt: string = this.clickedButtons
+          .join(", ")
+          .concat(", ", " Montreux Jazz festival poster");
         console.log("prompt:", text_prompt); // Log the MIME type to the console
 
         formData.append("init_image", image);
@@ -68,8 +93,8 @@ export default defineComponent({
         formData.append("text_prompts[0][text]", text_prompt);
         formData.append("cfg_scale", "7");
         formData.append("clip_guidance_preset", "FAST_BLUE");
-        formData.append("samples", "1");
-        formData.append("steps", "40");
+        formData.append("samples", "4");
+        formData.append("steps", "30");
 
         const response = await fetch(
           `${apiHost}/v1/generation/${engineId}/image-to-image`,
@@ -91,11 +116,11 @@ export default defineComponent({
         const artifacts = responseJSON.artifacts;
 
         artifacts.forEach((image: { base64: string }) => {
-          this.imageURLs.push("data:image/jpeg;base64,".concat(" ", image.base64 as string));
+          this.imageURLs.push(
+            "data:image/jpeg;base64,".concat(" ", image.base64 as string)
+          );
           //this.$router.push({ path: '/results', query: { image: image.base64 } });
         });
-
-
       } catch (error) {
         console.error(error);
         // Handle the error as needed (e.g., display an error message)
@@ -108,7 +133,10 @@ export default defineComponent({
       const mimeType = "image/jpeg"; // Specify the correct MIME type here
       return new File([blob], "68.jpeg", { type: mimeType });
     },
+  },
+});
 
+/*
     saveImageToFileSystem(base64: string, fileName: string) {
       const byteCharacters = atob(base64);
       const byteNumbers = new Array(byteCharacters.length);
@@ -126,19 +154,6 @@ export default defineComponent({
 
       URL.revokeObjectURL(url); // Clean up the object URL
     },
-  },
-});
+*/
+
 </script>
-
-<style>
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 columns */
-  grid-gap: 10px; /* Adjust the space between components */
-}
-
-button {
-  background-color: yellow;
-}
-</style>

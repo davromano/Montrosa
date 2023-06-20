@@ -1,30 +1,92 @@
 <template>
-  <div v-if="!showImages">
-    <div class="content-start h-56 grid grid-cols-3 gap-4">
-      <Keyword
-        v-for="word in styles"
-        :key="word"
-        :word="word"
-        @click="handleButtonClick(word)"
-      />
-      <Keyword
-        v-for="word in key_elements"
-        :key="word"
-        :word="word"
-        @click="handleButtonClick(word)"
-      />
+  <div v-if="!showImages" class="flex items-center justify-center flex-grow">
+    <div class="flex justify-center">
+      <div class="flex flex-col items-center ml-24">
+        <img src="src/assets/68.jpeg" class="w-96 auto" />
+        <h2 class="text-white text-3xl mt-3">1968</h2>
+        <h3 class="text-white text-2xl">Robert Bornand</h3>
+      </div>
+      <div class="flex-col justify-center">
+        <div class="ml-24">
+          <p class="text-white text-2xl mb-4" style="font-family: 'rebelton'">
+            Styles
+          </p>
+          <div class="content-start h-56 grid grid-cols-3 gap-4 ml-36">
+            <Keyword
+              v-for="word in styles"
+              :key="word"
+              :word="word"
+              @click="handleButtonClick(word)"
+            />
+          </div>
+          <p class="text-white text-2xl mb-4" style="font-family: 'rebelton'">
+            Key elements
+          </p>
+          <div class="content-start h-56 grid grid-cols-3 gap-4 ml-36">
+            <Keyword
+              v-for="word in key_elements"
+              :key="word"
+              :word="word"
+              @click="handleButtonClick(word)"
+            />
+          </div>
+          <button
+            @click="performAPICall"
+            :disabled="disabledState"
+            class="text-black text-3xl rounded py-6 px-24 bg-yellow-300 hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            style="font-family: 'rebelton'"
+          >
+            Generate
+          </button>
+        </div>
+      </div>
     </div>
-    <button @click="performAPICall" class=" text-white">Generate</button>
   </div>
-  <div v-if="showImages" class=" text-white">
-    <h3>Robert Bornand</h3>
-    <img src="src/assets/68.jpeg"/>
-    <h3>Montrosa's Tributes</h3>
-    <div v-for="image in imageURLs" :key="image">
-      <img :src="image" alt="Fetched Image" />
+  <div
+    v-if="showImages"
+    class="text-white flex-col items-center justify-center"
+  >
+    <div class="flex justify-center">
+      <div class="flex-col items-center text-center">
+        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">
+          Robert Bornand
+        </h3>
+        <img src="src/assets/68.jpeg" class="w-96 auto" />
+      </div>
+      <div
+        v-if="receivedImages"
+        class="flex flex-col ml-24 justify-center items-center text-center"
+      >
+        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">
+          Montrosa's Tributes
+        </h3>
+        <div class="flex-col">
+          <div class="content-start grid grid-cols-2 gap-4">
+            <div v-for="image in imageURLs" :key="image">
+              <img :src="image" alt="Fetched Image" class="w-48 auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="!receivedImages"
+        class="flex flex-col ml-24 justify-center items-center text-center"
+      >
+        <p class="text-white -mt-10 font-ttnorms text-xl">
+          Montrosa is creating...
+        </p>
+      </div>
     </div>
-    <button>Change prompt</button><br/>
-    <button>Send tributes by email</button>
+    <div class="flex justify-center">
+      <button
+        :disabled="!receivedImages"
+        @click="showImages = !showImages"
+        class="text-black text-3xl rounded py-4 px-20 bg-yellow-300 hover:bg-yellow-400 text-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+        style="font-family: 'rebelton'"
+      >
+        Change prompt
+      </button>
+    </div>
   </div>
 </template>
 
@@ -47,6 +109,8 @@ export default defineComponent({
       clickedButtons: [] as string[],
       imageURLs: [] as string[],
       showImages: false,
+      disabledState: true,
+      receivedImages: false,
     };
   },
   components: {
@@ -64,6 +128,8 @@ export default defineComponent({
         this.clickedButtons.push(word);
         console.log("I added", word);
       }
+
+      this.disabledState = this.clickedButtons.length === 0 ? true : false;
     },
 
     async performAPICall() {
@@ -115,6 +181,7 @@ export default defineComponent({
         const responseJSON = await response.json();
         const artifacts = responseJSON.artifacts;
 
+        this.receivedImages = true;
         artifacts.forEach((image: { base64: string }) => {
           this.imageURLs.push(
             "data:image/jpeg;base64,".concat(" ", image.base64 as string)
@@ -155,5 +222,8 @@ export default defineComponent({
       URL.revokeObjectURL(url); // Clean up the object URL
     },
 */
-
 </script>
+
+<style>
+@import "./../assets/fonts.css";
+</style>

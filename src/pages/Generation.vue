@@ -2,7 +2,7 @@
   <div v-if="!showImages" class="flex items-center justify-center flex-grow">
     <div class="flex justify-center">
       <div class="flex flex-col items-center ml-24">
-        <img src="src/assets/68.jpeg" class="w-96 auto" />
+        <img src="src/assets/68_re.jpeg" class="w-96 auto" />
         <h2 class="text-white text-3xl mt-3">1968</h2>
         <h3 class="text-white text-2xl">Robert Bornand</h3>
       </div>
@@ -51,7 +51,7 @@
         <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">
           Robert Bornand
         </h3>
-        <img src="src/assets/68.jpeg" class="w-96 auto" />
+        <img src="src/assets/68_re.jpeg" class="w-96 auto" />
       </div>
       <div
         v-if="receivedImages"
@@ -135,7 +135,7 @@ export default defineComponent({
     async performAPICall() {
       try {
         this.showImages = true;
-        const engineId = "stable-diffusion-512-v2-1";
+        const engineId = "stable-diffusion-xl-beta-v2-2-2";
         const apiHost = "https://api.stability.ai";
         const apiKey = "sk-xXYOiGr6P3qRpbzrg8OJ6iOmHESwgctxMej4UewnZ1B722vE";
 
@@ -158,7 +158,6 @@ export default defineComponent({
         formData.append("image_strength", "0.35");
         formData.append("text_prompts[0][text]", text_prompt);
         formData.append("cfg_scale", "7");
-        formData.append("clip_guidance_preset", "FAST_BLUE");
         formData.append("samples", "4");
         formData.append("steps", "30");
 
@@ -195,10 +194,10 @@ export default defineComponent({
     },
 
     async loadImageFromFileSystem() {
-      const response = await fetch("/src/assets/68.jpeg");
+      const response = await fetch("/src/assets/68_re.jpeg");
       const blob = await response.blob();
       const mimeType = "image/jpeg"; // Specify the correct MIME type here
-      return new File([blob], "68.jpeg", { type: mimeType });
+      return new File([blob], "68_re.jpeg", { type: mimeType });
     },
   },
 });

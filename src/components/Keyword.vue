@@ -2,8 +2,8 @@
   <div class="card">
     <button
       :class="{
-        'bg-yellow-300 text-black text-3xl rounded-full py-3 px-6 hover:bg-yellow-200 border-2 border-yellow-300': isClicked,
-        'bg-black text-white text-3xl rounded-full py-3 px-6 hover:bg-yellow-900 border-yellow-300 border-2' : !isClicked
+        'bg-montreux-yellow text-black text-3xl rounded-full py-3 px-6 hover:bg-yellow-200 border-2 border-montreux-yellow': isClicked,
+        'bg-black text-white text-3xl rounded-full py-3 px-6 hover:bg-yellow-900 border-montreux-yellow border-2' : !isClicked
       }"
       type="button"
       @click="toggleButton"

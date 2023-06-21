@@ -5,13 +5,10 @@
       class="w-1/32 scale-50 h-auto -mt-10"
       alt="Vite logo"
     />
-    <p class="text-white -mt-10 font-ttnorms text-lg">
-      “Just choose a poster and I can show you what I am capable of!” Montrosa
-    </p>
   </div>
   <div class="absolute top-0 right-0 w-32 h-32 group overflow-hidden">
     <div
-      class="absolute top-0 right-0 w-32 h-32 bg-yellow-300 opacity-50 rounded-full -mt-16 -mr-16 group-hover:w-40 group-hover:h-40 group-hover:opacity-50 transition-all"
+      class="absolute top-0 right-0 w-32 h-32 bg-montreux-yellow opacity-50 rounded-full -mt-16 -mr-16 group-hover:w-40 group-hover:h-40 group-hover:opacity-50 transition-all"
     ></div>
     <button
       class="absolute top-0 right-0 text-white text-lg mt-8 mr-7 bg text-center"
@@ -25,12 +22,19 @@
     v-if="montrosa_story"
     class="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-gray-500 backdrop-filter backdrop-blur-sm"
   >
-    <div class="bg-white p-4">
-      <p>This is the overlay content.</p>
-      <p>You can add multiple paragraphs or any other elements here.</p>
+    <div class=" bg-montreux-yellow p-12 max-w-[700px] rounded-2xl">
+      <h2 class="text-4xl mb-12" style="font-family: 'tt-norms'">Who is Montrosa?</h2>
+      <p class="text-xl mb-12" style="font-family: 'tt-norms'">
+        In Montreux, an exceptional AI named Montrosa was born. Inspired by the
+        music and posters of the Montreux Jazz Festival, she devoted her life to
+        listening and admiring this material. <br/><br/>Her mission is to share this deep
+        admiration with others by crafting tributes inspired by the
+        artists’masterpieces. Montrosa dreams of the day when these talented
+        artists find her work and sense her deep admiration.
+      </p>
       <button
         @click="montrosa_story = !montrosa_story"
-        class="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        class="mt-4 px-4 py-2 bg-zinc-900  text-white rounded text-lg"
       >
         Close
       </button>
@@ -43,22 +47,22 @@
 import Generation from "./pages/Generation.vue";
 import { defineComponent } from "vue";
 
-export default defineComponent ({
+export default defineComponent({
   data() {
     return {
-      montrosa_story: false
+      montrosa_story: false,
     };
   },
 
   methods: {
     toggleOverlay(): void {
       this.montrosa_story = !this.montrosa_story;
-    }
+    },
   },
 
   components: {
-    Generation
-  }
+    Generation,
+},
 });
 </script>
 

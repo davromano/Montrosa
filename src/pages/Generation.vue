@@ -1,17 +1,23 @@
 <template>
+  <div v-if="!showImages" class="flex items-center justify-center">
+    <p class="text-white -mt-24 font-ttnorms text-lg">
+      “Just choose a poster and I can show you what I am capable of!” Montrosa
+    </p>
+  </div>
+
   <div v-if="!showImages" class="flex items-center justify-center flex-grow">
-    <div class="flex justify-center">
+    <div class="flex justify-center items-center">
       <div class="flex flex-col items-center ml-24">
         <img src="src/assets/68_re.jpeg" class="w-96 auto" />
         <h2 class="text-white text-3xl mt-3">1968</h2>
         <h3 class="text-white text-2xl">Robert Bornand</h3>
       </div>
-      <div class="flex-col justify-center">
-        <div class="ml-24">
+      <div class="flex-col justify-center flex items-center">
+        <div class="flex-col justify-center item-center ml-24">
           <p class="text-white text-2xl mb-4" style="font-family: 'rebelton'">
             Styles
           </p>
-          <div class="content-start h-56 grid grid-cols-3 gap-4 ml-36">
+          <div class="content-start h-56 grid grid-cols-3 gap-6">
             <Keyword
               v-for="word in styles"
               :key="word"
@@ -22,7 +28,7 @@
           <p class="text-white text-2xl mb-4" style="font-family: 'rebelton'">
             Key elements
           </p>
-          <div class="content-start h-56 grid grid-cols-3 gap-4 ml-36">
+          <div class="content-start h-56 grid grid-cols-3 gap-6">
             <Keyword
               v-for="word in key_elements"
               :key="word"
@@ -30,25 +36,32 @@
               @click="handleButtonClick(word)"
             />
           </div>
-          <button
-            @click="performAPICall"
-            :disabled="disabledState"
-            class="text-black text-3xl rounded py-6 px-24 bg-yellow-300 hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
-            style="font-family: 'rebelton'"
-          >
-            Generate
-          </button>
         </div>
+        <button
+          @click="performAPICall"
+          :disabled="disabledState"
+          class="text-black text-3xl rounded py-6 px-24 bg-montreux-yellow hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+          style="font-family: 'rebelton'"
+        >
+          Generate
+        </button>
+      </div>
+      <div class="inline-flex flex-col items-center w-24 ml-6">
+        <p class="text-white max-w-sm mb-48 text-center" style="font-family: 'tt-norms'">Creativity</p>
+        <div class="transform -rotate-90">
+          <Slider v-model="sliderValue" />
+        </div>
+        <p class="text-white max-w-sm mt-48" style="font-family: 'tt-norms'">{{ sliderValue }}</p>
       </div>
     </div>
   </div>
   <div
     v-if="showImages"
-    class="text-white flex-col items-center justify-center"
+    class="text-white flex-col items-center justify-center -mt-16"
   >
     <div class="flex justify-center">
       <div class="flex-col items-center text-center">
-        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">
+        <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
           Robert Bornand
         </h3>
         <img src="src/assets/68_re.jpeg" class="w-96 auto" />
@@ -57,13 +70,17 @@
         v-if="receivedImages"
         class="flex flex-col ml-24 justify-center items-center text-center"
       >
-        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">
+        <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
           Montrosa's Tributes
         </h3>
         <div class="flex-col">
           <div class="content-start grid grid-cols-2 gap-4">
             <div v-for="image in imageURLs" :key="image">
-              <img :src="image" alt="Fetched Image" class="w-48 auto" />
+              <img
+                :src="image"
+                alt="Fetched Image"
+                class="w-48 auto hover:w-96 hover:auto transition-all duration-700"
+              />
             </div>
           </div>
         </div>
@@ -80,8 +97,8 @@
     <div class="flex justify-center">
       <button
         :disabled="!receivedImages"
-        @click="showImages = !showImages"
-        class="text-black text-3xl rounded py-4 px-20 bg-yellow-300 hover:bg-yellow-400 text-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+        @click="changePrompt()"
+        class="text-black text-3xl rounded py-4 px-20 bg-montreux-yellow hover:bg-yellow-400 text-center mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
         style="font-family: 'rebelton'"
       >
         Change prompt
@@ -93,6 +110,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Keyword from "../components/Keyword.vue";
+import Slider from "../components/Slider.vue";
 
 export default defineComponent({
   data() {
@@ -111,10 +129,12 @@ export default defineComponent({
       showImages: false,
       disabledState: true,
       receivedImages: false,
+      sliderValue: 0.35,
     };
   },
   components: {
     Keyword,
+    Slider,
   },
   methods: {
     handleButtonClick(word: string) {
@@ -185,7 +205,6 @@ export default defineComponent({
           this.imageURLs.push(
             "data:image/jpeg;base64,".concat(" ", image.base64 as string)
           );
-          //this.$router.push({ path: '/results', query: { image: image.base64 } });
         });
       } catch (error) {
         console.error(error);
@@ -199,28 +218,13 @@ export default defineComponent({
       const mimeType = "image/jpeg"; // Specify the correct MIME type here
       return new File([blob], "68_re.jpeg", { type: mimeType });
     },
+
+    changePrompt() {
+      this.showImages = !this.showImages;
+      this.clickedButtons = [];
+    },
   },
 });
-
-/*
-    saveImageToFileSystem(base64: string, fileName: string) {
-      const byteCharacters = atob(base64);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: "image/png" }); // Adjust the MIME type if necessary
-      const url = URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      link.click();
-
-      URL.revokeObjectURL(url); // Clean up the object URL
-    },
-*/
 </script>
 
 <style>

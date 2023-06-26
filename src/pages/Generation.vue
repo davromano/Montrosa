@@ -1,6 +1,6 @@
 <template>
   <div v-if="!showImages" class="flex items-center justify-center">
-    <p class="text-white -mt-24 font-ttnorms text-lg">
+    <p class="text-white -mt-24 font-ttnorms text-lg" style="font-family: 'tt-norms'">
       “Just choose a poster and I can show you what I am capable of!” Montrosa
     </p>
   </div>
@@ -9,8 +9,8 @@
     <div class="flex justify-center items-center">
       <div class="flex flex-col items-center ml-24">
         <img src="src/assets/68_re.jpeg" class="w-96 auto" />
-        <h2 class="text-white text-3xl mt-3">1968</h2>
-        <h3 class="text-white text-2xl">Robert Bornand</h3>
+        <h2 class="text-white text-3xl mt-3" style="font-family: 'tt-norms'">1968</h2>
+        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">Roger Bornand</h3>
       </div>
       <div class="flex-col justify-center flex items-center">
         <div class="flex-col justify-center item-center ml-24">
@@ -62,7 +62,7 @@
     <div class="flex justify-center">
       <div class="flex-col items-center text-center">
         <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
-          Robert Bornand
+          Roger Bornand
         </h3>
         <img src="src/assets/68_re.jpeg" class="w-96 auto" />
       </div>
@@ -130,6 +130,7 @@ export default defineComponent({
       disabledState: true,
       receivedImages: false,
       sliderValue: 0.35,
+      words_string: "",
     };
   },
   components: {
@@ -142,13 +143,10 @@ export default defineComponent({
         // Button was clicked and is now unclicked
         const index = this.clickedButtons.indexOf(word);
         this.clickedButtons.splice(index, 1);
-        console.log("I removed", word);
       } else {
         // Button was unclicked and is now clicked
         this.clickedButtons.push(word);
-        console.log("I added", word);
       }
-
       this.disabledState = this.clickedButtons.length === 0 ? true : false;
     },
 
@@ -166,21 +164,23 @@ export default defineComponent({
         const formData = new FormData();
         const image = await this.loadImageFromFileSystem(); // Load the image from the file system or any other source
 
-        console.log("Image MIME type:", image.type); // Log the MIME type to the console
-
+        this.words_string = this.clickedButtons.join(", ");
         const text_prompt: string = this.clickedButtons
           .join(", ")
           .concat(", ", " Montreux Jazz festival poster");
         console.log("prompt:", text_prompt); // Log the MIME type to the console
+        const scaledValue = (this.sliderValue * 0.6) + 0.2; // Map the slider value from 0-1 to 0.2-0.8
 
+        
         formData.append("init_image", image);
         formData.append("init_image_mode", "IMAGE_STRENGTH");
-        formData.append("image_strength", "0.35");
+        formData.append("image_strength", String(scaledValue));
         formData.append("text_prompts[0][text]", text_prompt);
         formData.append("cfg_scale", "7");
         formData.append("samples", "4");
         formData.append("steps", "30");
 
+        console.log("image strength:", String(scaledValue)); // Log the MIME type to the console
         const response = await fetch(
           `${apiHost}/v1/generation/${engineId}/image-to-image`,
           {
@@ -202,7 +202,7 @@ export default defineComponent({
 
         this.receivedImages = true;
         artifacts.forEach((image: { base64: string }) => {
-          this.imageURLs.push(
+          this.imageURLs.unshift(
             "data:image/jpeg;base64,".concat(" ", image.base64 as string)
           );
         });
@@ -221,7 +221,8 @@ export default defineComponent({
 
     changePrompt() {
       this.showImages = !this.showImages;
-      this.clickedButtons = [];
+      this.clickedButtons.splice(0);
+      this.disabledState = this.clickedButtons.length === 0 ? true : false;
     },
   },
 });

@@ -230,7 +230,7 @@ export default defineComponent({
 
       if (!response.ok) {
         // File not found or error occurred
-        response = await fetch("/assets/68_re.jpeg");
+        response = await fetch("/assets/68_re-62976332.jpeg");
       }
       const blob = await response.blob();
       const mimeType = "image/jpeg"; // Specify the correct MIME type here

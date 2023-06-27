@@ -10,4 +10,5 @@ export default defineConfig({
       '@': resolve(process.cwd(), 'src'),
     },
   },
+  base: '/montrosa/'
 })

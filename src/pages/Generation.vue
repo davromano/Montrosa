@@ -227,6 +227,7 @@ export default defineComponent({
 
     async loadImageFromFileSystem() {
       let response = await fetch("/src/assets/68_re.jpeg");
+      console.log(process.cwd());
 
       if (!response.ok) {
         // File not found or error occurred

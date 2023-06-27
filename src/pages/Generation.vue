@@ -1,6 +1,9 @@
 <template>
   <div v-if="!showImages" class="flex items-center justify-center">
-    <p class="text-white -mt-24 font-ttnorms text-xl" style="font-family: 'tt-norms'">
+    <p
+      class="text-white -mt-24 font-ttnorms text-xl"
+      style="font-family: 'tt-norms'"
+    >
       “Just choose a poster and I can show you what I am capable of!” Montrosa
     </p>
   </div>
@@ -8,9 +11,13 @@
   <div v-if="!showImages" class="flex items-center justify-center flex-grow">
     <div class="flex justify-center items-center">
       <div class="flex flex-col items-center ml-24">
-        <img src="/public/68_re.jpeg" class="w-96 auto" />
-        <h2 class="text-white text-3xl mt-3" style="font-family: 'tt-norms'">1968</h2>
-        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">Roger Bornand</h3>
+        <img src="/src/assets/68_re.jpeg" class="w-96 auto" />
+        <h2 class="text-white text-3xl mt-3" style="font-family: 'tt-norms'">
+          1968
+        </h2>
+        <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">
+          Roger Bornand
+        </h3>
       </div>
       <div class="flex-col justify-center flex items-center">
         <div class="flex-col justify-center item-center ml-24">
@@ -47,11 +54,18 @@
         </button>
       </div>
       <div class="inline-flex flex-col items-center w-24 ml-6 -translate-y-16">
-        <p class="text-white max-w-sm mb-48 text-center text-xl align-center items-center" style="font-family: 'tt-norms'">Creativity</p>
+        <p
+          class="text-white max-w-sm mb-48 text-center text-xl align-center items-center"
+          style="font-family: 'tt-norms'"
+        >
+          Creativity
+        </p>
         <div class="transform -rotate-90 mb-48">
           <Slider v-model="sliderValue" />
         </div>
-        <p class="text-white max-w-sm text-xl" style="font-family: 'tt-norms'">{{ sliderValue }}</p>
+        <p class="text-white max-w-sm text-xl" style="font-family: 'tt-norms'">
+          {{ sliderValue }}
+        </p>
       </div>
     </div>
   </div>
@@ -64,7 +78,7 @@
         <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
           Roger Bornand
         </h3>
-        <img src="/public/68_re.jpeg" class="w-96 auto" />
+        <img src="/src/assets/68_re.jpeg" class="w-96 auto" />
       </div>
       <div
         v-if="receivedImages"
@@ -171,7 +185,6 @@ export default defineComponent({
         console.log("prompt:", text_prompt); // Log the MIME type to the console
         const scaledValue = (1 - this.sliderValue) * 0.6 + 0.2;
 
-        
         formData.append("init_image", image);
         formData.append("init_image_mode", "IMAGE_STRENGTH");
         formData.append("image_strength", String(scaledValue));
@@ -213,7 +226,12 @@ export default defineComponent({
     },
 
     async loadImageFromFileSystem() {
-      const response = await fetch("/public/68_re.jpeg");
+      let response = await fetch("/src/assets/68_re.jpeg");
+
+      if (!response.ok) {
+        // File not found or error occurred
+        response = await fetch("/assets/68_re.jpeg");
+      }
       const blob = await response.blob();
       const mimeType = "image/jpeg"; // Specify the correct MIME type here
       return new File([blob], "68_re.jpeg", { type: mimeType });

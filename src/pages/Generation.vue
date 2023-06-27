@@ -8,7 +8,7 @@
   <div v-if="!showImages" class="flex items-center justify-center flex-grow">
     <div class="flex justify-center items-center">
       <div class="flex flex-col items-center ml-24">
-        <img src="src/assets/68_re.jpeg" class="w-96 auto" />
+        <img src="/src/assets/68_re.jpeg" class="w-96 auto" />
         <h2 class="text-white text-3xl mt-3" style="font-family: 'tt-norms'">1968</h2>
         <h3 class="text-white text-2xl" style="font-family: 'tt-norms'">Roger Bornand</h3>
       </div>
@@ -64,7 +64,7 @@
         <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
           Roger Bornand
         </h3>
-        <img src="src/assets/68_re.jpeg" class="w-96 auto" />
+        <img src="/src/assets/68_re.jpeg" class="w-96 auto" />
       </div>
       <div
         v-if="receivedImages"

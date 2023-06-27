@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center mb-8">
     <img
-      src="/../src/assets/montreux_logo.jpg"
+      src="/src/assets/montreux_logo.jpg"
       class="w-1/32 scale-50 h-auto -mt-10"
       alt="Vite logo"
     />

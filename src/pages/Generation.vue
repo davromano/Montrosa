@@ -227,11 +227,10 @@ export default defineComponent({
 
     async loadImageFromFileSystem() {
       let response = await fetch("/src/assets/68_re.jpeg");
-      console.log(process.cwd());
 
       if (!response.ok) {
         // File not found or error occurred
-        response = await fetch("/assets/68_re-62976332.jpeg");
+        response = await fetch("	https://davromano.github.io/Montrosa/assets/68_re-62976332.jpeg");
       }
       const blob = await response.blob();
       const mimeType = "image/jpeg"; // Specify the correct MIME type here

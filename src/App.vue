@@ -11,7 +11,7 @@
       class="absolute top-0 right-0 w-32 h-32 bg-montreux-yellow opacity-50 rounded-full -mt-16 -mr-16 group-hover:w-40 group-hover:h-40 group-hover:opacity-50 transition-all"
     ></div>
     <button
-      class="absolute top-0 right-0 text-white text-lg mt-8 mr-7 bg text-center"
+      class="absolute top-0 right-0 text-white text-xl mt-8 mr-7 bg text-center"
       style="font-family: 'tt-norms'"
       @click="montrosa_story = !montrosa_story"
     >

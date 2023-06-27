@@ -1,6 +1,6 @@
 <template>
   <div v-if="!showImages" class="flex items-center justify-center">
-    <p class="text-white -mt-24 font-ttnorms text-lg" style="font-family: 'tt-norms'">
+    <p class="text-white -mt-24 font-ttnorms text-xl" style="font-family: 'tt-norms'">
       “Just choose a poster and I can show you what I am capable of!” Montrosa
     </p>
   </div>
@@ -14,7 +14,7 @@
       </div>
       <div class="flex-col justify-center flex items-center">
         <div class="flex-col justify-center item-center ml-24">
-          <p class="text-white text-2xl mb-4" style="font-family: 'rebelton'">
+          <p class="text-white text-3xl mb-5" style="font-family: 'rebelton'">
             Styles
           </p>
           <div class="content-start h-56 grid grid-cols-3 gap-6">
@@ -25,7 +25,7 @@
               @click="handleButtonClick(word)"
             />
           </div>
-          <p class="text-white text-2xl mb-4" style="font-family: 'rebelton'">
+          <p class="text-white text-3xl mb-5" style="font-family: 'rebelton'">
             Key elements
           </p>
           <div class="content-start h-56 grid grid-cols-3 gap-6">
@@ -40,18 +40,18 @@
         <button
           @click="performAPICall"
           :disabled="disabledState"
-          class="text-black text-3xl rounded py-6 px-24 bg-montreux-yellow hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="text-black text-4xl rounded py-7 px-28 bg-montreux-yellow hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
           style="font-family: 'rebelton'"
         >
           Generate
         </button>
       </div>
-      <div class="inline-flex flex-col items-center w-24 ml-6">
-        <p class="text-white max-w-sm mb-48 text-center" style="font-family: 'tt-norms'">Creativity</p>
-        <div class="transform -rotate-90">
+      <div class="inline-flex flex-col items-center w-24 ml-6 -translate-y-16">
+        <p class="text-white max-w-sm mb-48 text-center text-xl align-center items-center" style="font-family: 'tt-norms'">Creativity</p>
+        <div class="transform -rotate-90 mb-48">
           <Slider v-model="sliderValue" />
         </div>
-        <p class="text-white max-w-sm mt-48" style="font-family: 'tt-norms'">{{ sliderValue }}</p>
+        <p class="text-white max-w-sm text-xl" style="font-family: 'tt-norms'">{{ sliderValue }}</p>
       </div>
     </div>
   </div>
@@ -169,7 +169,7 @@ export default defineComponent({
           .join(", ")
           .concat(", ", " Montreux Jazz festival poster");
         console.log("prompt:", text_prompt); // Log the MIME type to the console
-        const scaledValue = (this.sliderValue * 0.6) + 0.2; // Map the slider value from 0-1 to 0.2-0.8
+        const scaledValue = (1 - this.sliderValue) * 0.6 + 0.2;
 
         
         formData.append("init_image", image);

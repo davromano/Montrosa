@@ -125,6 +125,7 @@
 import { defineComponent } from "vue";
 import Keyword from "../components/Keyword.vue";
 import Slider from "../components/Slider.vue";
+import { API_KEY } from "./secret.vue";
 
 export default defineComponent({
   data() {
@@ -169,7 +170,7 @@ export default defineComponent({
         this.showImages = true;
         const engineId = "stable-diffusion-xl-beta-v2-2-2";
         const apiHost = "https://api.stability.ai";
-        const apiKey = process.env.API_KEY;
+        const apiKey = API_KEY;
 
         if (!apiKey) {
           throw new Error("Missing Stability API key.");
@@ -249,3 +250,4 @@ export default defineComponent({
 <style>
 @import "./../assets/fonts.css";
 </style>
+./API.js./secret.js

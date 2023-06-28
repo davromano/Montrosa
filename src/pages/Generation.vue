@@ -103,9 +103,13 @@
         v-if="!receivedImages"
         class="flex flex-col ml-24 justify-center items-center text-center"
       >
-        <p class="text-white -mt-10 font-ttnorms text-xl">
+        <p
+          class="text-white -mt-10 font-ttnorms text-2xl"
+          style="font-family: 'tt-norms'"
+        >
           Montrosa is creating...
         </p>
+        <Wave />
       </div>
     </div>
     <div class="flex justify-center">
@@ -126,6 +130,7 @@ import { defineComponent } from "vue";
 import Keyword from "../components/Keyword.vue";
 import Slider from "../components/Slider.vue";
 import { API_KEY } from "./secret.vue";
+import Wave from '../components/Loading_wave.vue';
 
 export default defineComponent({
   data() {
@@ -151,6 +156,7 @@ export default defineComponent({
   components: {
     Keyword,
     Slider,
+    Wave,
   },
   methods: {
     handleButtonClick(word: string) {
@@ -231,7 +237,9 @@ export default defineComponent({
 
       if (!response.ok) {
         // File not found or error occurred
-        response = await fetch("	https://davromano.github.io/Montrosa/assets/68_re-62976332.jpeg");
+        response = await fetch(
+          "	https://davromano.github.io/Montrosa/assets/68_re-62976332.jpeg"
+        );
       }
       const blob = await response.blob();
       const mimeType = "image/jpeg"; // Specify the correct MIME type here
@@ -242,6 +250,8 @@ export default defineComponent({
       this.showImages = !this.showImages;
       this.clickedButtons.splice(0);
       this.disabledState = this.clickedButtons.length === 0 ? true : false;
+      this.imageURLs.splice(0);
+      this.receivedImages = !this.receivedImages;
     },
   },
 });

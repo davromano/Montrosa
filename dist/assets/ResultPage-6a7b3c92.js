@@ -1,0 +1,1 @@
+import{d as o,u as n,r,_ as c,o as u,c as _,a as i}from"./index-a665def7.js";const l=o({setup(){const t=n(),e=r(""),a="data:image/jpeg;base64,";return e.value=t.query.image,{imageUrl:a.concat(" ",e.value)}}}),p=i("h1",null,"Result Page",-1),d=[p];function m(t,e,a,s,f,g){return u(),_("div",null,d)}const x=c(l,[["render",m]]);export{x as default};

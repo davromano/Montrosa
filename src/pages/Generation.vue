@@ -169,7 +169,7 @@ export default defineComponent({
         this.showImages = true;
         const engineId = "stable-diffusion-xl-beta-v2-2-2";
         const apiHost = "https://api.stability.ai";
-        const apiKey = "sk-xXYOiGr6P3qRpbzrg8OJ6iOmHESwgctxMej4UewnZ1B722vE";
+        const apiKey = process.env.API_KEY;
 
         if (!apiKey) {
           throw new Error("Missing Stability API key.");

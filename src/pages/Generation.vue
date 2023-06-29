@@ -75,8 +75,11 @@
   >
     <div class="flex justify-center">
       <div class="flex-col items-center text-center">
-        <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
+        <h3 class="text-white text-3xl mb-2" style="font-family: 'tt-norms'">
           Roger Bornand
+        </h3>
+        <h3 class="text-white text-xl mb-8" style="font-family: 'tt-norms'">
+          1968
         </h3>
         <img src="/src/assets/68_re.jpeg" class="w-96 auto" />
       </div>
@@ -84,8 +87,20 @@
         v-if="receivedImages"
         class="flex flex-col ml-24 justify-center items-center text-center"
       >
-        <h3 class="text-white text-2xl mb-3" style="font-family: 'tt-norms'">
+        <h3 class="text-white text-3xl mb-2" style="font-family: 'tt-norms'">
           Montrosa's Tributes
+        </h3>
+        <h3 class="text-white text-base" style="font-family: 'tt-norms'">
+          <span v-for="(word, index) in clickedButtons" :key="word">
+            {{ word }}
+            <span v-if="index !== clickedButtons.length - 1">, &nbsp;</span>
+          </span>
+        </h3>
+        <h3 class="text-white text-base  mb-3" style="font-family: 'tt-norms'">
+          <span>Creativity: </span>
+          <span>
+            {{ sliderValue }}
+          </span>
         </h3>
         <div class="flex-col">
           <div class="content-start grid grid-cols-2 gap-4">
@@ -130,7 +145,7 @@ import { defineComponent } from "vue";
 import Keyword from "../components/Keyword.vue";
 import Slider from "../components/Slider.vue";
 import { API_KEY } from "./secret.ts";
-import Wave from '../components/Loading_wave.vue';
+import Wave from "../components/Loading_wave.vue";
 
 export default defineComponent({
   data() {
@@ -260,5 +275,4 @@ export default defineComponent({
 <style>
 @import "./../assets/fonts.css";
 </style>
-./API.js./secret.js
-./secret.ts
+./API.js./secret.js ./secret.ts

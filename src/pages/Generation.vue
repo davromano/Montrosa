@@ -144,7 +144,6 @@
 import { defineComponent } from "vue";
 import Keyword from "../components/Keyword.vue";
 import Slider from "../components/Slider.vue";
-import { API_KEY } from "./secrets";
 import Wave from "../components/Loading_wave.vue";
 
 export default defineComponent({

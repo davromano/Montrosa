@@ -40,7 +40,7 @@ export default defineComponent({
       try {
         const engineId = "stable-diffusion-v1-5";
         const apiHost = "https://api.stability.ai";
-        const apiKey = "sk-xXYOiGr6P3qRpbzrg8OJ6iOmHESwgctxMej4UewnZ1B722vE";
+        const apiKey = "sk-F0XYRJHfZLcLKMOdlQhVY3bMCfpVIrRW21URIZXopdFZpHUA";
 
         if (!apiKey) {
           throw new Error("Missing Stability API key.");

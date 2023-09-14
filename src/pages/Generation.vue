@@ -144,7 +144,6 @@
 import { defineComponent } from "vue";
 import Keyword from "../components/Keyword.vue";
 import Slider from "../components/Slider.vue";
-import { API_KEY } from "./secret.ts";
 import Wave from "../components/Loading_wave.vue";
 
 export default defineComponent({
@@ -191,7 +190,7 @@ export default defineComponent({
         this.showImages = true;
         const engineId = "stable-diffusion-xl-beta-v2-2-2";
         const apiHost = "https://api.stability.ai";
-        const apiKey = API_KEY;
+        const apiKey = "sk-F0XYRJHfZLcLKMOdlQhVY3bMCfpVIrRW21URIZXopdFZpHUA";
 
         if (!apiKey) {
           throw new Error("Missing Stability API key.");
